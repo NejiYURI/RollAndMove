@@ -1,5 +1,5 @@
 {
-    "name": "PlayerInput",
+    "name": "PlayerInputAction",
     "maps": [
         {
             "name": "PlayerInput",
@@ -31,6 +31,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Jump",
+                    "type": "Button",
+                    "id": "ce681528-c9f0-4476-8752-34b6f17fa8a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -48,7 +57,7 @@
                 {
                     "name": "negative",
                     "id": "8b3d11b8-fe94-4d61-a267-f6b352a14246",
-                    "path": "<Keyboard>/leftArrow",
+                    "path": "<Keyboard>/rightArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -59,7 +68,7 @@
                 {
                     "name": "positive",
                     "id": "2bf2c7b0-fa15-41af-a4ce-323e57d8aa79",
-                    "path": "<Keyboard>/rightArrow",
+                    "path": "<Keyboard>/leftArrow",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -88,6 +97,39 @@
                     "action": "Move_R",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "AD_Jump",
+                    "id": "e04780ba-c1b7-46cf-8626-bb7ecff3c08e",
+                    "path": "OneModifier",
+                    "interactions": "Hold(duration=0.1,pressPoint=0.2)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "4bdb152b-31c5-40ba-a6fd-522ea661de42",
+                    "path": "<Keyboard>/d",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "e383aa9d-d02e-4dfe-aaf2-d15d21eb8788",
+                    "path": "<Keyboard>/a",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": true
                 }
             ]
         }

@@ -9,6 +9,6 @@ public class CameraFollowScript : MonoBehaviour
 
     private void FixedUpdate()
     {
-        this.transform.position = Vector3.Lerp(this.transform.position, TargetObj.position + Offset, 1.2f);
+        this.transform.position = Vector3.Lerp(this.transform.position, TargetObj.position + Offset, 50f);
     }
 }

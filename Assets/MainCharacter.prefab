@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 694515221800298532}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.098, y: 1.18, z: 0}
+  m_LocalPosition: {x: 0.214, y: 1.179, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -123,7 +123,7 @@ HingeJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0.12, y: -0.3}
-  m_ConnectedAnchor: {x: 0.022, y: 0.8800001}
+  m_ConnectedAnchor: {x: 0.334, y: 0.8790002}
   m_UseMotor: 0
   m_Motor:
     m_MotorSpeed: 0
@@ -667,8 +667,8 @@ HingeJoint2D:
     m_MaximumMotorForce: 10000
   m_UseLimits: 1
   m_AngleLimits:
-    m_LowerAngle: -30
-    m_UpperAngle: 30
+    m_LowerAngle: -15
+    m_UpperAngle: 15
 --- !u!60 &2643239196972539163
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -1734,8 +1734,9 @@ GameObject:
   - component: {fileID: 4173064695592511111}
   - component: {fileID: 6826695442138555226}
   - component: {fileID: 7917121927492858356}
+  - component: {fileID: 6336044694697599261}
   m_Layer: 0
-  m_Name: 1
+  m_Name: Neji
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1749,7 +1750,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3387500539416314770}
   m_LocalRotation: {x: -0, y: -0, z: 0.2066311, w: 0.97841895}
-  m_LocalPosition: {x: -0.663, y: 1.068, z: 0}
+  m_LocalPosition: {x: -0.651, y: 1.126, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1796,7 +1797,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1129685547
   m_SortingLayer: 1
-  m_SortingOrder: 4
+  m_SortingOrder: 5
   m_Sprite: {fileID: 6624318414794397065, guid: c544f30c6b828cb48bd26b51a58c1c42, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1844,6 +1845,26 @@ FixedJoint2D:
   m_BreakTorque: Infinity
   m_AutoConfigureConnectedAnchor: 1
   m_Anchor: {x: 0, y: 0}
-  m_ConnectedAnchor: {x: -0.663, y: 1.0680001}
+  m_ConnectedAnchor: {x: -0.651, y: 1.1260002}
   m_DampingRatio: 0
   m_Frequency: 0
+--- !u!95 &6336044694697599261
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3387500539416314770}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 48cc0064f93e3a8409ce448b3f5f3692, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

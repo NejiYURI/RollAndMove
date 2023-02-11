@@ -36,7 +36,7 @@ public class PlayerControl : MonoBehaviour
 
     private bool CanJump;
 
-    private bool IsDead;
+    public bool IsDead;
 
     public AudioClip DeathSound;
     public AudioClip JumpSound;
@@ -62,6 +62,10 @@ public class PlayerControl : MonoBehaviour
         inputActions.PlayerInput.Move_L.performed += _ => LeftPress();
         inputActions.PlayerInput.Move_R.performed += _ => RightPress();
         inputActions.PlayerInput.Jump.performed += _ => JumpFunc();
+        if (GameEventManager.instance != null)
+        {
+            GameEventManager.instance.StageClear.AddListener(StageClear);
+        }
     }
 
     // Update is called once per frame
@@ -156,6 +160,11 @@ public class PlayerControl : MonoBehaviour
 
         this.rg.AddForce(new Vector2(Random.Range(-5f, 5f) * ExplosionForce, Random.Range(3, 10f) * ExplosionForce));
         this.rg.AddTorque(Random.Range(-5f, 5f) * ExplosionForce);
+    }
+
+    public void StageClear()
+    {
+        inputActions.Disable();
     }
 
     IEnumerator JumpCoolDown()

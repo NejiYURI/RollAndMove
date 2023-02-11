@@ -13,4 +13,6 @@ public class GameEventManager : MonoBehaviour
     }
 
     public UnityEvent<bool> ChargeLeg;
+
+    public UnityEvent StageClear;
 }

@@ -71,6 +71,15 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Confirm"",
+                    ""type"": ""Button"",
+                    ""id"": ""6fd1040e-fe92-4c39-88f3-06ec477fe503"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -165,11 +174,22 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""516db6d2-a069-4db6-b78b-0a80d0ed70b0"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""path"": ""<Keyboard>/r"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Retry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6a14442-1c70-4289-9ab9-6beec2007444"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Confirm"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -185,6 +205,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_PlayerInput_Move_R = m_PlayerInput.FindAction("Move_R", throwIfNotFound: true);
         m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
         m_PlayerInput_Retry = m_PlayerInput.FindAction("Retry", throwIfNotFound: true);
+        m_PlayerInput_Confirm = m_PlayerInput.FindAction("Confirm", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -249,6 +270,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInput_Move_R;
     private readonly InputAction m_PlayerInput_Jump;
     private readonly InputAction m_PlayerInput_Retry;
+    private readonly InputAction m_PlayerInput_Confirm;
     public struct PlayerInputActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -258,6 +280,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         public InputAction @Move_R => m_Wrapper.m_PlayerInput_Move_R;
         public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
         public InputAction @Retry => m_Wrapper.m_PlayerInput_Retry;
+        public InputAction @Confirm => m_Wrapper.m_PlayerInput_Confirm;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -282,6 +305,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Retry.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRetry;
                 @Retry.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRetry;
                 @Retry.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRetry;
+                @Confirm.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnConfirm;
+                @Confirm.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnConfirm;
+                @Confirm.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnConfirm;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -301,6 +327,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Retry.started += instance.OnRetry;
                 @Retry.performed += instance.OnRetry;
                 @Retry.canceled += instance.OnRetry;
+                @Confirm.started += instance.OnConfirm;
+                @Confirm.performed += instance.OnConfirm;
+                @Confirm.canceled += instance.OnConfirm;
             }
         }
     }
@@ -312,5 +341,6 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnMove_R(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnRetry(InputAction.CallbackContext context);
+        void OnConfirm(InputAction.CallbackContext context);
     }
 }

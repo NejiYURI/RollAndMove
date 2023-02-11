@@ -5,11 +5,14 @@ using UnityEngine.InputSystem;
 
 public class PlayerControl : MonoBehaviour
 {
-    public GameObject LegObj;
-    public Vector3 LegOffset;
+
     public Rigidbody2D PlayerLeg;
 
-   
+    public Rigidbody2D Sholder_1;
+
+    public Rigidbody2D Sholder_2;
+
+
 
     private Rigidbody2D rg;
 
@@ -24,10 +27,19 @@ public class PlayerControl : MonoBehaviour
 
     public float JumpForce;
 
+    
+
+    public float ExplosionForce;
+
     [SerializeField]
     private string StepStr;
 
+    private bool CanJump;
+
     private bool IsDead;
+
+    public AudioClip DeathSound;
+    public AudioClip JumpSound;
 
     private PlayerInputAction inputActions;
 
@@ -45,10 +57,8 @@ public class PlayerControl : MonoBehaviour
     }
     void Start()
     {
+        CanJump = true;
         this.rg = GetComponent<Rigidbody2D>();
-        GameObject leg_tmp = Instantiate(LegObj, this.transform.position + LegOffset, Quaternion.identity);
-        if (leg_tmp.GetComponent<Rigidbody2D>() != null) PlayerLeg = leg_tmp.GetComponent<Rigidbody2D>();
-        if (leg_tmp.GetComponent<HingeJoint2D>() != null) leg_tmp.GetComponent<HingeJoint2D>().connectedBody = this.rg;
         inputActions.PlayerInput.Move_L.performed += _ => LeftPress();
         inputActions.PlayerInput.Move_R.performed += _ => RightPress();
         inputActions.PlayerInput.Jump.performed += _ => JumpFunc();
@@ -67,9 +77,9 @@ public class PlayerControl : MonoBehaviour
     private void FixedUpdate()
     {
         PlayerLeg.angularVelocity = Mathf.Clamp(PlayerLeg.angularVelocity, -LegSpeedLimit, LegSpeedLimit);
-        if (BalanceValue!=0)
+        if (BalanceValue != 0)
         {
-            this.rg.AddTorque(BalanceValue*BalanceSpeed * Time.deltaTime);
+            this.rg.AddTorque(BalanceValue * BalanceSpeed * Time.deltaTime);
         }
     }
 
@@ -77,7 +87,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (!StepStr.Equals("L"))
         {
-            CurSpeed = Mathf.Clamp(CurSpeed + MaxSpeed / 10f, 0f, MaxSpeed);
+            CurSpeed = Mathf.Clamp(CurSpeed + MaxSpeed / 3f, 0f, MaxSpeed);
             PlayerLeg.AddTorque(-1f * CurSpeed);
             StepStr = "L";
         }
@@ -92,7 +102,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (!StepStr.Equals("R"))
         {
-            CurSpeed = Mathf.Clamp(CurSpeed + MaxSpeed / 10f, 0f, MaxSpeed);
+            CurSpeed = Mathf.Clamp(CurSpeed + MaxSpeed / 3f, 0f, MaxSpeed);
             PlayerLeg.AddTorque(-1f * CurSpeed);
             StepStr = "R";
         }
@@ -105,15 +115,53 @@ public class PlayerControl : MonoBehaviour
 
     void JumpFunc()
     {
-        Debug.Log("Wee");
-        this.rg.AddForce(new Vector2(0, JumpForce));
+        if (!CanJump) return;
+        StartCoroutine(JumpCoolDown());
+        if (Sholder_1 != null) Sholder_1.AddTorque(-1000f);
+        if (Sholder_2 != null) Sholder_2.AddTorque(1000f);
+        if (AudioController.instance != null) AudioController.instance.PlaySound(JumpSound, 0.8f);
+        this.rg.AddForce(new Vector2(0, JumpForce+ -1 * this.rg.velocity.y));
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        PlayerCrash();
+    }
+
+    public void PlayerCrash()
+    {
         if (IsDead) return;
+        if (AudioController.instance != null) AudioController.instance.PlaySound(DeathSound,0.8f);
         IsDead = true;
         inputActions.Disable();
+        DeathExplosion();
         if (MainGameManager.instance != null) MainGameManager.instance.GameOver();
+    }
+
+    void DeathExplosion()
+    {
+        var hinge2DList = this.GetComponentsInChildren<HingeJoint2D>();
+        foreach (var hinge in hinge2DList)
+        {
+            hinge.enabled= false;
+        }
+
+        var Rigidbodys = this.GetComponentsInChildren<Rigidbody2D>();
+
+        foreach (var _rg in Rigidbodys)
+        {
+            _rg.AddForce(new Vector2(Random.Range(-5f,5f)* ExplosionForce, Random.Range(3, 10f) * ExplosionForce));
+            _rg.AddTorque(Random.Range(-5f, 5f) * ExplosionForce);
+        }
+
+        this.rg.AddForce(new Vector2(Random.Range(-5f, 5f) * ExplosionForce, Random.Range(3, 10f) * ExplosionForce));
+        this.rg.AddTorque(Random.Range(-5f, 5f) * ExplosionForce);
+    }
+
+    IEnumerator JumpCoolDown()
+    {
+        CanJump = false;
+        yield return new WaitForSeconds(1f);
+        CanJump = true;
     }
 }

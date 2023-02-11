@@ -62,6 +62,15 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Retry"",
+                    ""type"": ""Button"",
+                    ""id"": ""50b2d880-31c6-4583-81b8-8ef9ac15e9c9"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +161,17 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""516db6d2-a069-4db6-b78b-0a80d0ed70b0"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Retry"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -164,6 +184,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         m_PlayerInput_Move_L = m_PlayerInput.FindAction("Move_L", throwIfNotFound: true);
         m_PlayerInput_Move_R = m_PlayerInput.FindAction("Move_R", throwIfNotFound: true);
         m_PlayerInput_Jump = m_PlayerInput.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerInput_Retry = m_PlayerInput.FindAction("Retry", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -227,6 +248,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerInput_Move_L;
     private readonly InputAction m_PlayerInput_Move_R;
     private readonly InputAction m_PlayerInput_Jump;
+    private readonly InputAction m_PlayerInput_Retry;
     public struct PlayerInputActions
     {
         private @PlayerInputAction m_Wrapper;
@@ -235,6 +257,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         public InputAction @Move_L => m_Wrapper.m_PlayerInput_Move_L;
         public InputAction @Move_R => m_Wrapper.m_PlayerInput_Move_R;
         public InputAction @Jump => m_Wrapper.m_PlayerInput_Jump;
+        public InputAction @Retry => m_Wrapper.m_PlayerInput_Retry;
         public InputActionMap Get() { return m_Wrapper.m_PlayerInput; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -256,6 +279,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnJump;
+                @Retry.started -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRetry;
+                @Retry.performed -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRetry;
+                @Retry.canceled -= m_Wrapper.m_PlayerInputActionsCallbackInterface.OnRetry;
             }
             m_Wrapper.m_PlayerInputActionsCallbackInterface = instance;
             if (instance != null)
@@ -272,6 +298,9 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @Retry.started += instance.OnRetry;
+                @Retry.performed += instance.OnRetry;
+                @Retry.canceled += instance.OnRetry;
             }
         }
     }
@@ -282,5 +311,6 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
         void OnMove_L(InputAction.CallbackContext context);
         void OnMove_R(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnRetry(InputAction.CallbackContext context);
     }
 }

@@ -18,6 +18,8 @@ public class MainGameManager : MonoBehaviour
 
     public GameObject ClearPanel;
 
+    public AudioClip GameClearSound;
+
     private PlayerInputAction inputActions;
 
     private bool IsPlayerDeath;
@@ -80,6 +82,7 @@ public class MainGameManager : MonoBehaviour
     public void StageClear()
     {
         IsStageClear = true;
+        if (AudioController.instance != null) AudioController.instance.PlaySound(GameClearSound, 0.1f);
         this.ClearPanel.SetActive(true);
     }
 

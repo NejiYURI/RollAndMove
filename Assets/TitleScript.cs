@@ -9,4 +9,9 @@ public class TitleScript : MonoBehaviour
     {
         SceneManager.LoadScene("Tutorial");
     }
+
+    public void LoadStage(string StageName)
+    {
+        SceneManager.LoadScene(StageName);
+    }
 }

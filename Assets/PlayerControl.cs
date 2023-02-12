@@ -27,7 +27,7 @@ public class PlayerControl : MonoBehaviour
 
     public float JumpForce;
 
-    
+
 
     public float ExplosionForce;
 
@@ -38,8 +38,11 @@ public class PlayerControl : MonoBehaviour
 
     public bool IsDead;
 
+    public bool CanFootStep;
+
     public AudioClip DeathSound;
     public AudioClip JumpSound;
+    public AudioClip FootStepSound;
 
     private PlayerInputAction inputActions;
 
@@ -58,6 +61,7 @@ public class PlayerControl : MonoBehaviour
     void Start()
     {
         CanJump = true;
+        CanFootStep = true;
         this.rg = GetComponent<Rigidbody2D>();
         inputActions.PlayerInput.Move_L.performed += _ => LeftPress();
         inputActions.PlayerInput.Move_R.performed += _ => RightPress();
@@ -124,18 +128,15 @@ public class PlayerControl : MonoBehaviour
         if (Sholder_1 != null) Sholder_1.AddTorque(-1000f);
         if (Sholder_2 != null) Sholder_2.AddTorque(1000f);
         if (AudioController.instance != null) AudioController.instance.PlaySound(JumpSound, 0.8f);
-        this.rg.AddForce(new Vector2(0, JumpForce+ -1 * this.rg.velocity.y));
+        this.rg.AddForce(new Vector2(0, JumpForce + -1 * this.rg.velocity.y));
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        PlayerCrash();
-    }
+
 
     public void PlayerCrash()
     {
         if (IsDead) return;
-        if (AudioController.instance != null) AudioController.instance.PlaySound(DeathSound,0.8f);
+        if (AudioController.instance != null) AudioController.instance.PlaySound(DeathSound, 0.4f);
         IsDead = true;
         inputActions.Disable();
         DeathExplosion();
@@ -147,14 +148,14 @@ public class PlayerControl : MonoBehaviour
         var hinge2DList = this.GetComponentsInChildren<HingeJoint2D>();
         foreach (var hinge in hinge2DList)
         {
-            hinge.enabled= false;
+            hinge.enabled = false;
         }
 
         var Rigidbodys = this.GetComponentsInChildren<Rigidbody2D>();
 
         foreach (var _rg in Rigidbodys)
         {
-            _rg.AddForce(new Vector2(Random.Range(-5f,5f)* ExplosionForce, Random.Range(3, 10f) * ExplosionForce));
+            _rg.AddForce(new Vector2(Random.Range(-5f, 5f) * ExplosionForce, Random.Range(3, 10f) * ExplosionForce));
             _rg.AddTorque(Random.Range(-5f, 5f) * ExplosionForce);
         }
 
@@ -167,10 +168,35 @@ public class PlayerControl : MonoBehaviour
         inputActions.Disable();
     }
 
+    public void FootStep()
+    {
+        if (IsDead || !CanFootStep) return;
+        if (AudioController.instance != null) AudioController.instance.PlaySound(FootStepSound, 0.05f);
+        StartCoroutine(FootStepCooldown());
+    }
+
+    IEnumerator FootStepCooldown()
+    {
+        CanFootStep = false;
+        yield return new WaitForSeconds(0.3f);
+        CanFootStep = true;
+    }
+
     IEnumerator JumpCoolDown()
     {
         CanJump = false;
         yield return new WaitForSeconds(1f);
         CanJump = true;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        PlayerCrash();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag.Equals("Trap"))
+            PlayerCrash();
     }
 }

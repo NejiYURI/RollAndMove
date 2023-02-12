@@ -139,7 +139,10 @@ public class PlayerControl : MonoBehaviour
         if (AudioController.instance != null) AudioController.instance.PlaySound(DeathSound, 0.4f);
         IsDead = true;
         inputActions.Disable();
-        DeathExplosion();
+        if (GameSettingScript.instance != null && GameSettingScript.instance.Explosion)
+        {
+            DeathExplosion();
+        }
         if (MainGameManager.instance != null) MainGameManager.instance.GameOver();
     }
 

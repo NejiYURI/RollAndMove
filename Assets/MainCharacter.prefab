@@ -298,7 +298,7 @@ MonoBehaviour:
   PlayerLeg: {fileID: 694515223076805397}
   Sholder_1: {fileID: 694515223266462863}
   Sholder_2: {fileID: 694515222713770487}
-  MaxSpeed: 900
+  MaxSpeed: 1100
   CurSpeed: 0
   BalanceValue: 0
   BalanceSpeed: 4000

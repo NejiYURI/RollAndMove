@@ -2090,8 +2090,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Head: {fileID: 1907320923898558038}
+  HeadJoint: {fileID: 1907320923898557994}
   Sholder_1: {fileID: 1907320924367718670}
   Sholder_2: {fileID: 1907320923812865142}
+  HeadShakeCounter: 0
 --- !u!233 &1907320923578586064
 HingeJoint2D:
   m_ObjectHideFlags: 0
